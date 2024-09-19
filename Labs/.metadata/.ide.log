@@ -1832,3 +1832,42 @@
 2024-09-18 17:10:16,478 [INFO] ProjectBuilder:5097 - Time for Generating toolchain IDE Files: 3871mS.
 2024-09-18 17:10:16,484 [INFO] ProjectBuilder:3107 - Time for Copy CMSIS : 2mS.
 2024-09-18 17:10:16,486 [INFO] ProjectBuilder:3107 - Time for Copy CMSIS : 0mS.
+2024-09-18 17:26:30,361 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,453x105,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2024-09-18 17:29:01,357 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2024-09-18 17:45:15,493 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2024-09-18 17:46:34,746 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2024-09-18 21:23:18,107 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 482514408 Bytes (838860800)
+2024-09-18 21:23:19,805 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 501390752 Bytes (838860800)
+2024-09-18 21:23:22,285 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 582662704 Bytes (838860800)
+2024-09-18 21:23:22,541 [INFO] BlockDiagram:2766 - set Specific Code input for plugin: NVIC
+2024-09-18 21:23:22,541 [INFO] BlockDiagram:2766 - set Specific Code input for plugin: TIM1_8F1
+2024-09-18 21:23:22,541 [INFO] BlockDiagram:2766 - set Specific Code input for plugin: SYS
+2024-09-18 21:23:22,541 [INFO] BlockDiagram:2766 - set Specific Code input for plugin: GPIO
+2024-09-18 21:23:22,541 [INFO] BlockDiagram:2766 - set Specific Code input for plugin: RCC
+2024-09-18 21:23:22,542 [INFO] CodeGenerator:807 - code generatio: config db path: /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.common.mx_6.12.1.202409122256//db/
+2024-09-18 21:23:22,623 [INFO] CodeEngine:255 - oldGeneratedFile, /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/MXTmpFiles/license.tmp_save
+2024-09-18 21:23:22,836 [INFO] CodeEngine:279 - Generated code: /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/MXTmpFiles/license.tmp
+2024-09-18 21:23:22,881 [INFO] CodeEngine:255 - oldGeneratedFile, /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/MXTmpFiles/gpio.tmp_save
+2024-09-18 21:23:23,018 [INFO] CodeEngine:279 - Generated code: /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/MXTmpFiles/gpio.tmp
+2024-09-18 21:23:23,485 [INFO] CodeEngine:255 - oldGeneratedFile, /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Src/stm32f1xx_it.c_save
+2024-09-18 21:23:23,904 [INFO] CodeEngine:279 - Generated code: /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Src/stm32f1xx_it.c
+2024-09-18 21:23:23,907 [INFO] CodeEngine:255 - oldGeneratedFile, /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Inc/stm32f1xx_it.h_save
+2024-09-18 21:23:24,012 [INFO] CodeEngine:279 - Generated code: /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Inc/stm32f1xx_it.h
+2024-09-18 21:23:24,022 [INFO] CodeEngine:255 - oldGeneratedFile, /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Src/stm32f1xx_hal_msp.c_save
+2024-09-18 21:23:24,155 [INFO] CodeEngine:279 - Generated code: /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Src/stm32f1xx_hal_msp.c
+2024-09-18 21:23:24,157 [INFO] CodeEngine:255 - oldGeneratedFile, /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/MXTmpFiles/system.tmp_save
+2024-09-18 21:23:24,222 [INFO] CodeEngine:279 - Generated code: /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/MXTmpFiles/system.tmp
+2024-09-18 21:23:24,228 [INFO] CodeEngine:311 - oldGeneratedFile, /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Inc/stm32f1xx_hal_conf.h_save
+2024-09-18 21:23:24,297 [INFO] CodeEngine:335 - Generated code: /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Inc/stm32f1xx_hal_conf.h
+2024-09-18 21:23:24,341 [WARN] IPConfigManager:3554 - IP not found : TIM
+2024-09-18 21:23:24,342 [WARN] CodeGenerator:4002 - IP not found : null
+2024-09-18 21:23:24,345 [INFO] CodeEngine:255 - oldGeneratedFile, /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Inc/main.h_save
+2024-09-18 21:23:24,445 [INFO] CodeEngine:279 - Generated code: /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Inc/main.h
+2024-09-18 21:23:24,447 [INFO] CodeEngine:255 - oldGeneratedFile, /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Src/main.c_save
+2024-09-18 21:23:24,557 [INFO] CodeEngine:279 - Generated code: /Users/tirthpatel/Documents/GitHub/ense452TirthPatel/Labs/Lab1/Core/Src/main.c
+2024-09-18 21:23:25,001 [INFO] ProjectBuilder:3249 - Time for Copy HAL[1] : 59mS.
+2024-09-18 21:23:25,009 [INFO] ProjectBuilder:4828 - Project Generator version: 4.5.0-B34
+2024-09-18 21:23:25,093 [INFO] ConfigFileManager:1531 - The Die is : DIE410
+2024-09-18 21:23:26,393 [INFO] ProjectBuilder:5097 - Time for Generating toolchain IDE Files: 1383mS.
+2024-09-18 21:23:26,396 [INFO] ProjectBuilder:3107 - Time for Copy CMSIS : 1mS.
+2024-09-18 21:23:26,397 [INFO] ProjectBuilder:3107 - Time for Copy CMSIS : 0mS.
