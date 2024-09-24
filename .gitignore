@@ -1,0 +1,11 @@
+.DS_Store
+.metadata/
+
+
+Labs/.metadata/
+Labs/.DS_Store
+
+Assignments/.metadata/
+Assignments/.DS_Store
+
+Assignments/Assignment1/complex_calculator
