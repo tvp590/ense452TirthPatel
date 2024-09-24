@@ -12,8 +12,8 @@
 
 struct Complex
 {
-    float real;
-    float imag;
+    double real;
+    double imag;
 };
 
 // Function prototypes
