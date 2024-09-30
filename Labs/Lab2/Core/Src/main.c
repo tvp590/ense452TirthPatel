@@ -1,3 +1,10 @@
+/*
+  Name : Tirth V Patel
+  SID  : 200435378
+  File : main.c
+  Description : This file contains the main function of the application.
+*/
+
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
@@ -18,7 +25,12 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cli.h"
 #include <string.h>
+
+#define BACKSPACE 8		//ASCII value
+#define DELETE 127
+#define ENTER_KEY 13	//ASCII value
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -64,6 +76,7 @@ static void MX_USART2_UART_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
+
 int main(void)
 {
 
@@ -75,7 +88,6 @@ int main(void)
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
@@ -96,24 +108,44 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  char cliTX[50];
-  char cliRX[50];
-  strcpy((char *)cliTX, "Phase 1: Serial Port Working!\r\n");
-
-
-  // Transmit the data
-  HAL_UART_Transmit(&huart2, cliTX, strlen((char *)cliTX), 400);
+  char cliBufferRx[50];
+  CLI_Init();
+  CLI_PrintHelp();
+  int command = 0;
+  char inputChar;
+  int bufferIndex = 0;
 
   while (1)
   {
-	     if((HAL_UART_Receive(&huart2, cliRX, strlen((char *)cliRX),200)) == HAL_OK)
-	      {
-	    	 strcpy((char *)cliTX, (char *)cliRX); // Echo received data
-	    	 strcat((char *)cliTX, "\r\n");   // Add carriage return and line feed
+	  CLI_PrintPrompt();
+	  while(1){
+		  if (HAL_UART_Receive(&huart2, (uint8_t *)&inputChar, 1, 10000) == HAL_OK) {
+			  if (inputChar == ENTER_KEY) {
+				  cliBufferRx[bufferIndex] = '\0';		// Null-terminate the buffer
+				  if (bufferIndex > 0) {
+					  command = cliBufferRx[0] - '0';
+					  CLI_ExecuteCommand(command);
+					  bufferIndex = 0;
+				  }
+				  break;
+			  }
 
-	        // Send back received data
-	        HAL_UART_Transmit(&huart2, cliTX, strlen((char *)cliTX), 200);
-	      }
+			  else if (inputChar == BACKSPACE || inputChar == DELETE){
+				  if (bufferIndex > 0) {
+					  bufferIndex--;
+					  HAL_UART_Transmit(&huart2, (uint8_t *)"\b \b", 3, 1000);  // Erase character on screen
+				  }
+			  }
+
+			  else {
+				  if (bufferIndex < sizeof(cliBufferRx) - 1){
+					  cliBufferRx[bufferIndex++] = inputChar;
+					  HAL_UART_Transmit(&huart2, (uint8_t *)&inputChar, 1, 1000);
+				  }
+			  }
+		  }
+	  }
+	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
