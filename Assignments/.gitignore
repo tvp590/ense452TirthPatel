@@ -1,2 +1,7 @@
+.vscode
+
 Assignment1/as1
 Assignment1/*.o
+
+Assignment2/testq
+Assignment2/*.o
