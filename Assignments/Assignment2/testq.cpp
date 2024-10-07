@@ -33,6 +33,21 @@ bool testQueueEquality( Queue & q, std::vector<Data> const & array)
     return true;
 }
 
+void printExpectedData(const std::vector<Data>& expectedData) {
+    vector<Data>::size_type i = 0;
+    printf("Expected data: ");
+    
+    while (i < expectedData.size()) {
+        printf("%lu:(%d,%d) ", i, expectedData[i].x, expectedData[i].y);
+        i++;
+    }
+    printf("\n");
+}
+
+/*
+* Test the insert function
+* return void
+*/
 void testInsertFunction(){
     fprintf(stdout, "Testing insert function\n");
     Queue q2;
@@ -52,7 +67,27 @@ void testInsertFunction(){
 
     assert(testQueueEquality(q2, expectedData)); 
 
-    fprintf(stdout, "Insert function test passed\n");
+    // insert at the beginning
+    q2.insert(Data(7,8), 0);
+    expectedData.insert(expectedData.begin(), Data(7,8));
+    assert(testQueueEquality(q2, expectedData));
+
+    // insert at the end
+    q2.insert(Data(9,10), q2.size());
+    expectedData.insert(expectedData.end(), Data(9,10));
+    //assert(testQueueEquality(q2, expectedData));
+    printExpectedData(expectedData);
+    printf("Queue data:    ");
+    q2.print();
+
+    // insert at size - 1
+    q2.insert(Data(11,12), q2.size()-1);
+    expectedData.insert(expectedData.end()-1, Data(11,12));
+    //assert(testQueueEquality(q2, expectedData));
+    printExpectedData(expectedData);
+    printf("Queue data:    ");
+    q2.print();
+
 }
 
 int main()
