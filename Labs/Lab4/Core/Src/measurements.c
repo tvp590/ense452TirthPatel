@@ -172,7 +172,6 @@ void measure_copy_128() {
         elapsed = timer_stop(start);
         elapsed_total += elapsed;
     }
-    CLI_TransmitResult("Size:", sizeof(MediumStruct));
     CLI_TransmitResult("Average time for 128-byte struct copy", elapsed_total/TRIALS);
 
     free(src);
