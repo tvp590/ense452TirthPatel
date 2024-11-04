@@ -1,8 +1,8 @@
 /*
- * timer.c
- *
- *  Created on: Nov 3, 2024
- *      Author: tirthpatel
+ * Name : Tirth V Patel
+ * SID : 200435378
+ * File Name : timer.c
+ * Purpose : To initialize the timer and measure the time taken for the operations
  */
 
 

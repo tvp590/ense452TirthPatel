@@ -1,8 +1,8 @@
 /*
- * measurements.c
- *
- *  Created on: Nov 3, 2024
- *      Author: tirthpatel
+ * Name : Tirth V Patel
+ * SID : 200435378
+ * File Name : measurements.c
+ * Purpose : To measure the time taken for 32-bit and 64-bit addition, multiplication, division and copying of 8, 128 and 1024 byte structs
  */
 
 

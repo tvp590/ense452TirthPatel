@@ -1,8 +1,8 @@
 /*
- * timer.h
- *
- *  Created on: Nov 3, 2024
- *      Author: tirthpatel
+* Name : Tirth V Patel
+* SID : 200435378
+* File Name : timer.h
+* Purpose : To define the functions for timer.c
  */
 
 #ifndef TIMER_H
