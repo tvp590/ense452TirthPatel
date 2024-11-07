@@ -1,3 +1,10 @@
+/*
+* Name: Tirth V Patel
+* SID: 200435378
+* FileName: sin_lookup_table.h
+* Purpose: Header file defining constants and functions for a sine lookup table.
+*/
+
 #ifndef SIN_LOOKUP_TABLE_H
 #define SIN_LOOKUP_TABLE_H
 

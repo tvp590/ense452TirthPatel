@@ -1,3 +1,12 @@
+/*
+* Name: Tirth V Patel
+* SID : 200435378
+* File Name : main.cpp
+* Purpose: Benchmark and compare the performance of sine calculation using a lookup table vs. the standard sin() function.
+*/
+
+
+
 #include <stdio.h>
 #include <time.h>
 #include <math.h>

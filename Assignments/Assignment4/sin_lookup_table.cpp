@@ -1,3 +1,12 @@
+/*
+* Name: Tirth V Patel
+* SID: 200435378
+* FileName: sin_lookup_table.cpp
+* Purpose: Initialize and access a sine lookup table for efficient sine calculations.
+*/
+
+
+
 # include "sin_lookup_table.h"
 #include <cmath>
 #include <cstdio>
