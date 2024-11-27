@@ -1,9 +1,13 @@
-/*
- * external_control.c
+/******************************************************************************
+ * File Name: external_control.c
+ * Author: Tirth V Patel
+ * Student ID: 200435378
+ * Date: November 23, 2024
  *
- *  Created on: Nov 23, 2024
- *      Author: tirthpatel
- */
+ * Description:
+ * Source file for handling external control of the elevator system. It includes
+ * functions for controlling the elevator's button inputs and 7-segment display.
+ *****************************************************************************/
 
 
 #include "external_control.h"
@@ -11,6 +15,7 @@
 // Function to clear the button pins
 void clearButtonPins(void)
 {
+	// Reset all button GPIO pins to their default inactive state (GPIO_PIN_RESET)
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET); // Button 1
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET); // Button 2
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET); // Button 3
@@ -20,6 +25,7 @@ void clearButtonPins(void)
 // Function to clear the 7-segment display (reset all segments to off)
 void clearDisplay(void)
 {
+	// Set all segments of the 7-segment display to off (GPIO_PIN_RESET)
     HAL_GPIO_WritePin(SEG_A_PORT, SEG_A_PIN, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(SEG_B_PORT, SEG_B_PIN, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(SEG_C_PORT, SEG_C_PIN, GPIO_PIN_RESET);
@@ -64,8 +70,10 @@ void displayNumber(uint8_t num)
     }
 }
 
+// Function to initialize the external control system
 void ExternalControl_Init(void)
 {
     clearButtonPins();
     clearDisplay();
+    displayNumber(1);
 }

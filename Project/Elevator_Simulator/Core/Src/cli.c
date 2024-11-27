@@ -1,37 +1,52 @@
-/*
- * cli.c
+/******************************************************************************
+ * File Name: cli.c
+ * Author: Tirth V Patel
+ * Student ID: 200435378
+ * Date: November 14, 2024
  *
- *  Created on: Nov 14, 2024
- *      Author: tirthpatel
- */
-
-
+ * Description:
+ * Implements the Command Line Interface (CLI) for the elevator control system,
+ * handling UART communication, dynamic status updates, and user interactions.
+ ******************************************************************************/
 
 #include "cli.h"
 
-extern uint8_t RXBuffer[1];
-
+// Transmit a string over UART
 void uartTransmit(const char* str) {
 	 HAL_UART_Transmit(&huart2, (uint8_t*)str, strlen(str),1000);
 }
 
+// Receive data over UART in interrupt mode
 void uartReceive(uint8_t *buffer, uint16_t size) {
     HAL_UART_Receive_IT(&huart2, buffer, size);
 }
 
+// Clear the terminal screen
 void clearScreen(void) {
     uartTransmit(CLEAR_SCREEN);
 }
 
+// Save the current cursor position
 void saveCursorPosition() {
 	uartTransmit("\033[s");
 }
 
+// Restore the cursor to the previously saved position
 void restoreCursorPosition() {
 	uartTransmit("\033[u");
 }
+//
+//void SysTick_Handler(void) {
+//	totalTime++;
+//}
+//// Function to initialize SysTick timer
+//void SysTick_Init(void) {
+//	SysTick_Config(SystemCoreClock);
+//}
 
-// Utility function to format the status line with dynamic padding
+
+
+// Calculate the padding needed to align the status string in the display
 int calculatePadding(const char* status) {
     int lineWidth = 33;
     int baseTextLength = 10;        // "| Status: " is 10 characters long
@@ -41,6 +56,7 @@ int calculatePadding(const char* status) {
     return padding;
 }
 
+// Draw the floor layout and highlight the current floor
 void drawFloors(int currentFloor) {
 	uartTransmit("\033[1;1H");
 	for (int i = 1; i<=3; i++){
@@ -65,6 +81,7 @@ void drawFloors(int currentFloor) {
 	}
 }
 
+// Display available commands and instructions for the user
 void displayInstructions(void) {
 	uartTransmit("\033[10;H");
 	uartTransmit("\n+--------------------------------------------------------------------------+\r\n");
@@ -79,7 +96,8 @@ void displayInstructions(void) {
 	uartTransmit("+--------------------------------------------------------------------------+\r\n");
 }
 
-void displayStatus(int elapsedTime, int currentFloor, const char* status) {
+// Display the current status of the elevator (time elapsed, floor, status)
+void displayStatus(int currentFloor, const char* status) {
 	char buffer[50];
 
 	uartTransmit("\033[1;30H");
@@ -87,7 +105,7 @@ void displayStatus(int elapsedTime, int currentFloor, const char* status) {
 	uartTransmit("\033[2;30H");
 	uartTransmit("|         Elevator Status      |\r\n");
 	uartTransmit("\033[3;30H");
-	sprintf(buffer, "| Time Elapsed: %d seconds      |\r\n", elapsedTime);
+	sprintf(buffer, "| Time Elapsed: %d seconds      |\r\n", 0);
 	uartTransmit(buffer);
 	uartTransmit("\033[4;30H");
 	sprintf(buffer, "| Floor: %d                     |\r\n", currentFloor);
@@ -102,28 +120,30 @@ void displayStatus(int elapsedTime, int currentFloor, const char* status) {
 	uartTransmit("+------------------------------+\r\n");
 }
 
+// Set up the initial status window (clear screen, draw initial floor, display status)
 void setupStatusWindow(void) {
-	int elapsedTime = 0;
 	clearScreen();
 	drawFloors(FLOOR_1);
-    displayStatus(elapsedTime, FLOOR_1, "Idle");
+    displayStatus(FLOOR_1, "Idle");
     displayInstructions();
     saveCursorPosition();
 }
 
+// Set up the scrollable region and prompt the user for input
 void setupScrollRegion(void) {
 	uartTransmit("\x1b[21;36r");
     uartTransmit("\033[21;1H");	// Move cursor to the start of the scrollable region
     CLI_Prompt();
 }
 
-
+// Initialize the CLI system
 void CLI_Init(void) {
 	setupStatusWindow();
 	setupScrollRegion();
 	uartReceive(RXBuffer, 1);
 }
 
+// Display the command prompt for the user
 void CLI_Prompt(void) {
 	char prompt[] = "\r\n>> ";
 	uartTransmit(prompt);

@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdbool.h>
+#include <stdlib.h>
 #include "cli.h"
 #include "elevator_control.h"
 #include "external_control.h"
@@ -373,23 +374,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     	isEmergencyMode = !isEmergencyMode;
     	osMessagePut(Emergency_StopHandle, (uint32_t)isEmergencyMode, osWaitForever);
     }
-//
-//    if (GPIO_Pin == BUTTON_1_PIN)
-//    {
-//    	displayNumber(1);
-//    }
-//    if (GPIO_Pin == BUTTON_2_PIN)
-//    {
-//    	displayNumber(2);
-//    }
-//    if (GPIO_Pin == BUTTON_3_PIN)
-//    {
-//      	displayNumber(2);
-//    }
-//    if (GPIO_Pin == BUTTON_2_PIN)
-//    {
-//    	displayNumber(3);
-//    }
 }
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
@@ -451,8 +435,7 @@ void Elevator_Control_Task(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-	osEvent event = osMessageGet(Input_QueueHandle, 0);
-
+	osEvent event = osMessageGet(Input_QueueHandle, osWaitForever);
 	if (event.status == osEventMessage) {
 	  char* inputMessage = (char*)event.value.v;
 	  if (strcmp(inputMessage, "M") == 0) {
@@ -476,18 +459,8 @@ void Elevator_Control_Task(void const * argument)
     	  moveElevatorToFloor(target);
       }
 	}
-
-	uint32_t notification = ulTaskNotifyTake(pdTRUE, 0);
-	if (notification > 0){
-		uartTransmit("floor");
-		moveElevatorToFloor(notification);
-	}
-
-    osDelay(1);
-    if (event.status == osEventMessage || notification != 0) {
-      // Only call CLI_Prompt if there was no new input
-      CLI_Prompt();
-    }
+	osDelay(1);
+    CLI_Prompt();
   }
   /* USER CODE END Elevator_Control_Task */
 }
@@ -550,20 +523,17 @@ void CLI_Receive_Task(void const * argument)
 void ButtonCheck_Task(void const * argument)
 {
   /* USER CODE BEGIN ButtonCheck_Task */
-  uint32_t floorRequest = 0;
   ExternalControl_Init();
   /* Infinite loop */
   for(;;)
   {
-
 	  // Check Button 1
       if (HAL_GPIO_ReadPin(BUTTON_1_PORT, BUTTON_1_PIN) == GPIO_PIN_RESET)
       {
           osDelay(50);
           if (HAL_GPIO_ReadPin(BUTTON_1_PORT, BUTTON_1_PIN) == GPIO_PIN_RESET)
           {
-        	  floorRequest = 1;
-        	  moveElevatorToFloor(floorRequest);
+        	  moveElevatorToFloor(1);
           }
       }
 
@@ -573,8 +543,7 @@ void ButtonCheck_Task(void const * argument)
           osDelay(50);
           if (HAL_GPIO_ReadPin(BUTTON_2_PORT, BUTTON_2_PIN) == GPIO_PIN_RESET)
           {
-        	  floorRequest = 2;
-        	  moveElevatorToFloor(floorRequest);
+        	  moveElevatorToFloor(2);
           }
       }
 
@@ -584,8 +553,7 @@ void ButtonCheck_Task(void const * argument)
           osDelay(50);
           if (HAL_GPIO_ReadPin(BUTTON_3_PORT, BUTTON_3_PIN) == GPIO_PIN_RESET)
           {
-        	  floorRequest = 2;
-        	  moveElevatorToFloor(floorRequest);
+        	  moveElevatorToFloor(2);
           }
       }
 
@@ -595,13 +563,10 @@ void ButtonCheck_Task(void const * argument)
           osDelay(50);
           if (HAL_GPIO_ReadPin(BUTTON_4_PORT, BUTTON_4_PIN) == GPIO_PIN_RESET)
           {
-        	  floorRequest = 3;
-        	  moveElevatorToFloor(floorRequest);
-//        	  xTaskNotify(Elevator_Control_Task, floorRequest, eSetValueWithOverwrite);
+        	  moveElevatorToFloor(3);
           }
       }
       osDelay(10);
-
   }
   /* USER CODE END ButtonCheck_Task */
 }

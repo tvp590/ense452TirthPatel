@@ -1,10 +1,14 @@
-/*
- * elevator_control.c
+/******************************************************************************
+ * File Name: elevator_control.c
+ * Author: Tirth V Patel
+ * Student ID: 200435378
+ * Date: November 14, 2024
  *
- *  Created on: Nov 14, 2024
- *      Author: tirthpatel
- */
-
+ * Description:
+ * Source file for the elevator control system. It contains functions to
+ * manage elevator operations such as floor movement, door control, emergency
+ * stops, and maintenance mode.
+ *****************************************************************************/
 
 #include "elevator_control.h"
 #include "external_control.h"
@@ -13,22 +17,24 @@
 volatile int currentFloor = FLOOR_1;
 ElevatorState elevatorState = ELEVATOR_IDLE;
 
-
+// Function to check if the elevator is already on the target floor
 int isElevatorOnSameFloor(int targetFloor) {
     return currentFloor == targetFloor;
 }
 
+// Function to check if the floor is valid (1, 2, or 3)
 int isValidFloor(int floor) {
     return (floor == FLOOR_1 || floor == FLOOR_2 || floor == FLOOR_3);
 }
 
 
-// Function to open the elevator door
+// Function to open the elevator door and update the elevator state
 void openDoor(void) {
     elevatorState = ELEVATOR_DOORS_OPEN;
-    displayStatus(0, currentFloor, getElevatorStateString(elevatorState));
+    displayStatus(currentFloor, getElevatorStateString(elevatorState));
 }
 
+// Function to activate the door opening process when the elevator is idle
 void activateDoorOpening(void){
 	if (elevatorState == ELEVATOR_IDLE) {
 		saveCursorPosition();
@@ -36,15 +42,15 @@ void activateDoorOpening(void){
 		osDelay(1800);
 		restoreCursorPosition();
 	}
-
 }
-// Function to close the elevator door
+
+// Function to close the elevator door and update the elevator state
 void closeDoor(void) {
     elevatorState = ELEVATOR_DOORS_CLOSED;
-    displayStatus(0, currentFloor, getElevatorStateString(elevatorState));
+    displayStatus(currentFloor, getElevatorStateString(elevatorState));
 }
 
-
+// Function to activate the door closing process when the door is open
 void activateDoorClosing(void){
 	if (elevatorState == ELEVATOR_DOORS_OPEN){
 		saveCursorPosition();
@@ -55,23 +61,25 @@ void activateDoorClosing(void){
 	}
 }
 
-// Function to perform an emergency stop
+// Function to perform an emergency stop and update the elevator state
 void emergencyStopOperations(void) {
     elevatorState = ELEVATOR_EMERGENCY_STOP;
-    displayStatus( 0, currentFloor, getElevatorStateString(elevatorState));
+    displayStatus(currentFloor, getElevatorStateString(elevatorState));
 }
 
+// Function to resume elevator operations after an emergency stop or maintenance mode
 void resumeElevatorOperations(void){
 	elevatorState =  ELEVATOR_IDLE;
-	displayStatus( 0, currentFloor, getElevatorStateString(elevatorState));
+	displayStatus(currentFloor, getElevatorStateString(elevatorState));
 }
 
-// Function to perform maintenance mode
+// Function to activate maintenance mode and update the elevator state
 void maintenanceMode(void) {
 	elevatorState = ELEVATOR_MAINTENANCE_MODE;
-	displayStatus( 0, currentFloor, getElevatorStateString(elevatorState));
+	displayStatus(currentFloor, getElevatorStateString(elevatorState));
 }
 
+// Function to convert elevator state to string for display
 const char* getElevatorStateString(ElevatorState state) {
 	switch (state) {
 	    case ELEVATOR_IDLE:         return "Idle";
@@ -85,6 +93,7 @@ const char* getElevatorStateString(ElevatorState state) {
 	}
 }
 
+// Function to move the elevator to a target floor, handling various states
 void moveElevatorToFloor(int targetFloor) {
 	if (!isValidFloor(targetFloor)) {
 	   uartTransmit(" Invalid floor entered. Please enter a valid floor (1, 2, or 3).");
@@ -101,6 +110,11 @@ void moveElevatorToFloor(int targetFloor) {
 		return;
 	}
 
+	if (elevatorState == ELEVATOR_DOORS_OPEN){
+		uartTransmit(" Close the door");
+		return;
+	}
+
 	// Save the cursor position at the start
 	saveCursorPosition();
 
@@ -109,7 +123,7 @@ void moveElevatorToFloor(int targetFloor) {
 		osDelay(1800);
 		closeDoor();
 		osDelay(1800);
-		displayStatus( 0, currentFloor, getElevatorStateString(ELEVATOR_IDLE));
+		displayStatus( currentFloor, getElevatorStateString(ELEVATOR_IDLE));
 		displayNumber(currentFloor);
 	}
 	else {
@@ -126,23 +140,23 @@ void moveElevatorToFloor(int targetFloor) {
 
 			drawFloors(currentFloor);
 			displayNumber(currentFloor);
-			displayStatus(0, currentFloor, getElevatorStateString(elevatorState));
+			displayStatus(currentFloor, getElevatorStateString(elevatorState));
 
 			__enable_irq();   // Re-enable interrupts
 
 			osDelay(1800);	// Simulate time taken to move between floors
 		}
 		drawFloors(currentFloor);
-		displayStatus( 0, currentFloor, getElevatorStateString(ELEVATOR_IDLE));
+		displayStatus(currentFloor, getElevatorStateString(ELEVATOR_IDLE));
 		displayNumber(currentFloor);
 
 		osDelay(1800);
-		displayStatus( 0, currentFloor, getElevatorStateString(ELEVATOR_DOORS_OPEN));
+		displayStatus(currentFloor, getElevatorStateString(ELEVATOR_DOORS_OPEN));
 		osDelay(1800);
-		displayStatus( 0, currentFloor, getElevatorStateString(ELEVATOR_DOORS_CLOSED));
+		displayStatus(currentFloor, getElevatorStateString(ELEVATOR_DOORS_CLOSED));
 		osDelay(1800);
 		elevatorState=ELEVATOR_IDLE;
-		displayStatus( 0, currentFloor, getElevatorStateString(elevatorState));
+		displayStatus(currentFloor, getElevatorStateString(elevatorState));
 	}
 	// Restore the cursor position after updating the floor and status
 	restoreCursorPosition();
