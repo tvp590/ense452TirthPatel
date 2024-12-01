@@ -13,7 +13,7 @@
 
 // Transmit a string over UART
 void uartTransmit(const char* str) {
-	 HAL_UART_Transmit(&huart2, (uint8_t*)str, strlen(str),1000);
+	HAL_UART_Transmit(&huart2, (uint8_t*)str, strlen(str),1000);
 }
 
 // Receive data over UART in interrupt mode
@@ -35,16 +35,6 @@ void saveCursorPosition() {
 void restoreCursorPosition() {
 	uartTransmit("\033[u");
 }
-//
-//void SysTick_Handler(void) {
-//	totalTime++;
-//}
-//// Function to initialize SysTick timer
-//void SysTick_Init(void) {
-//	SysTick_Config(SystemCoreClock);
-//}
-
-
 
 // Calculate the padding needed to align the status string in the display
 int calculatePadding(const char* status) {
@@ -90,7 +80,7 @@ void displayInstructions(void) {
 	uartTransmit("| To select 3rd floor ~ TYPE: '3'                                          |\r\n");
 	uartTransmit("| To open door ~ TYPE: 'open'                                              |\r\n");
 	uartTransmit("| To close door ~ TYPE: 'close'                                            |\r\n");
-	uartTransmit("| For emergency stop ~ Press: 'User Button PC13'. To continue press again! |\r\n");
+	uartTransmit("| For emergency stop ~ Press: 'User Blue Button PC13'.                     |\r\n");
 	uartTransmit("| For maintenance ~ TYPE: 'M'.                                             |\r\n");
 	uartTransmit("| To resume ~ TYPE: 'R'.                                                   |\r\n");
 	uartTransmit("+--------------------------------------------------------------------------+\r\n");
@@ -105,18 +95,15 @@ void displayStatus(int currentFloor, const char* status) {
 	uartTransmit("\033[2;30H");
 	uartTransmit("|         Elevator Status      |\r\n");
 	uartTransmit("\033[3;30H");
-	sprintf(buffer, "| Time Elapsed: %d seconds      |\r\n", 0);
-	uartTransmit(buffer);
-	uartTransmit("\033[4;30H");
 	sprintf(buffer, "| Floor: %d                     |\r\n", currentFloor);
 	uartTransmit(buffer);
-	uartTransmit("\033[5;30H");
+	uartTransmit("\033[4;30H");
 
 	int padding = calculatePadding(status);
 
 	sprintf(buffer, "| Status: %s%*s|\r\n", status, padding, "");
 	uartTransmit(buffer);
-	uartTransmit("\033[6;30H");
+	uartTransmit("\033[5;30H");
 	uartTransmit("+------------------------------+\r\n");
 }
 

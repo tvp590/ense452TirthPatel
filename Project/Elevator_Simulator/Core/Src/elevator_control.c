@@ -128,6 +128,11 @@ void moveElevatorToFloor(int targetFloor) {
 	}
 	else {
 		while (currentFloor != targetFloor){
+
+			if (elevatorState == ELEVATOR_EMERGENCY_STOP){
+				return;
+			}
+
 			__disable_irq();  // Disable all interrupts
 			if (currentFloor < targetFloor) {
 				currentFloor++;

@@ -366,20 +366,36 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+ * @brief Callback function for handling GPIO external interrupts.
+ *        Triggered when a pin configured for external interrupt generates an event.
+ *
+ * @param GPIO_Pin The pin that caused the interrupt.
+ */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-    if (GPIO_Pin == GPIO_PIN_13) // Check for PC13 interrupt
+	// Check if the interrupt is triggered by pin PC13
+    if (GPIO_Pin == GPIO_PIN_13)
     {
-    	static bool isEmergencyMode = false;
-    	isEmergencyMode = !isEmergencyMode;
-    	osMessagePut(Emergency_StopHandle, (uint32_t)isEmergencyMode, osWaitForever);
+    	// Send a simple signal to the task
+    	osMessagePut(Emergency_StopHandle, 1, osWaitForever);
     }
 }
 
+/**
+ * @brief Callback function called when a UART transmission is complete.
+ *
+ * @param huart Pointer to the UART handle structure.
+ */
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
 	if (huart->Instance == USART2) {}
 }
 
+/**
+ * @brief Callback function called when a UART reception is complete.
+ *
+ * @param huart Pointer to the UART handle structure.
+ */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	uartReceive(RXBuffer, 1);
 }
@@ -401,23 +417,12 @@ void Emergency_Stop_Task(void const * argument)
 	osEvent event = osMessageGet(Emergency_StopHandle, osWaitForever);
     if (event.status == osEventMessage)
     {
-    	bool setEmergencyMode = (bool)event.value.v;
-        if (setEmergencyMode)
-        {
-          restoreCursorPosition();
-          saveCursorPosition();
-          emergencyStopOperations();
-          restoreCursorPosition();
-        }
-        else
-        {
-          saveCursorPosition();
-          resumeElevatorOperations();
-          restoreCursorPosition();
-        }
+       restoreCursorPosition();
+       saveCursorPosition();
+       emergencyStopOperations();
+       restoreCursorPosition();
     }
 	osDelay(1);
-	CLI_Prompt();
   }
   /* USER CODE END 5 */
 }
