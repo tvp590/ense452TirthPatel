@@ -65,18 +65,21 @@ void activateDoorClosing(void){
 void emergencyStopOperations(void) {
     elevatorState = ELEVATOR_EMERGENCY_STOP;
     displayStatus(currentFloor, getElevatorStateString(elevatorState));
+    displayNumber(4);
 }
 
 // Function to resume elevator operations after an emergency stop or maintenance mode
 void resumeElevatorOperations(void){
 	elevatorState =  ELEVATOR_IDLE;
 	displayStatus(currentFloor, getElevatorStateString(elevatorState));
+	displayNumber(currentFloor);
 }
 
 // Function to activate maintenance mode and update the elevator state
 void maintenanceMode(void) {
 	elevatorState = ELEVATOR_MAINTENANCE_MODE;
 	displayStatus(currentFloor, getElevatorStateString(elevatorState));
+	displayNumber(0);
 }
 
 // Function to convert elevator state to string for display

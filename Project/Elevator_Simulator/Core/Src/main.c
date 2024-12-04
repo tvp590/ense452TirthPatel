@@ -121,7 +121,6 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim3);
   uartReceive(RXBuffer, 1);
   CLI_Init();
-  ExternalControl_Init();
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -527,54 +526,60 @@ void CLI_Receive_Task(void const * argument)
 /* USER CODE END Header_ButtonCheck_Task */
 void ButtonCheck_Task(void const * argument)
 {
-  /* USER CODE BEGIN ButtonCheck_Task */
-  ExternalControl_Init();
-  /* Infinite loop */
-  for(;;)
-  {
-	  // Check Button 1
-      if (HAL_GPIO_ReadPin(BUTTON_1_PORT, BUTTON_1_PIN) == GPIO_PIN_RESET)
-      {
-          osDelay(50);
-          if (HAL_GPIO_ReadPin(BUTTON_1_PORT, BUTTON_1_PIN) == GPIO_PIN_RESET)
-          {
-        	  moveElevatorToFloor(1);
-          }
-      }
+    uint8_t prevButtonStates[4];
+    uint8_t currButtonState;
+    char floorMessage[4];
 
-      // Check Button 2
-      if (HAL_GPIO_ReadPin(BUTTON_2_PORT, BUTTON_2_PIN) == GPIO_PIN_RESET)
-      {
-          osDelay(50);
-          if (HAL_GPIO_ReadPin(BUTTON_2_PORT, BUTTON_2_PIN) == GPIO_PIN_RESET)
-          {
-        	  moveElevatorToFloor(2);
-          }
-      }
+    // Initialize prevButtonStates to the current state of the buttons
+    prevButtonStates[0] = HAL_GPIO_ReadPin(BUTTON_1_PORT, BUTTON_1_PIN);
+    prevButtonStates[1] = HAL_GPIO_ReadPin(BUTTON_2_PORT, BUTTON_2_PIN);
+    prevButtonStates[2] = HAL_GPIO_ReadPin(BUTTON_3_PORT, BUTTON_3_PIN);
+    prevButtonStates[3] = HAL_GPIO_ReadPin(BUTTON_4_PORT, BUTTON_4_PIN);
 
-      // Check Button 3
-      if (HAL_GPIO_ReadPin(BUTTON_3_PORT, BUTTON_3_PIN) == GPIO_PIN_RESET)
-      {
-          osDelay(50);
-          if (HAL_GPIO_ReadPin(BUTTON_3_PORT, BUTTON_3_PIN) == GPIO_PIN_RESET)
-          {
-        	  moveElevatorToFloor(2);
-          }
-      }
+    ExternalControl_Init();
 
-      // Check Button 4
-      if (HAL_GPIO_ReadPin(BUTTON_4_PORT, BUTTON_4_PIN) == GPIO_PIN_RESET)
-      {
-          osDelay(50);
-          if (HAL_GPIO_ReadPin(BUTTON_4_PORT, BUTTON_4_PIN) == GPIO_PIN_RESET)
-          {
-        	  moveElevatorToFloor(3);
-          }
-      }
-      osDelay(10);
-  }
-  /* USER CODE END ButtonCheck_Task */
+    for (;;)
+    {
+        // Button 1
+        currButtonState = HAL_GPIO_ReadPin(BUTTON_1_PORT, BUTTON_1_PIN);
+        if (currButtonState == GPIO_PIN_RESET && prevButtonStates[0] == GPIO_PIN_SET)
+        {
+        	sprintf(floorMessage, "%d", FLOOR_1);  // Convert 1 to "1"
+        	osMessagePut(Input_QueueHandle, (uint32_t)floorMessage, osWaitForever);
+        }
+        prevButtonStates[0] = currButtonState;
+
+        // Button 2
+        currButtonState = HAL_GPIO_ReadPin(BUTTON_2_PORT, BUTTON_2_PIN);
+        if (currButtonState == GPIO_PIN_RESET && prevButtonStates[1] == GPIO_PIN_SET)
+        {
+        	sprintf(floorMessage, "%d", FLOOR_2);  // Convert 2 to "2"
+        	osMessagePut(Input_QueueHandle, (uint32_t)floorMessage, osWaitForever);
+        }
+        prevButtonStates[1] = currButtonState;
+
+        // Button 3
+        currButtonState = HAL_GPIO_ReadPin(BUTTON_3_PORT, BUTTON_3_PIN);
+        if (currButtonState == GPIO_PIN_RESET && prevButtonStates[2] == GPIO_PIN_SET)
+        {
+        	sprintf(floorMessage, "%d", FLOOR_2);  // Convert 2 to "2"
+        	osMessagePut(Input_QueueHandle, (uint32_t)floorMessage, osWaitForever);
+        }
+        prevButtonStates[2] = currButtonState;
+
+        // Button 4
+        currButtonState = HAL_GPIO_ReadPin(BUTTON_4_PORT, BUTTON_4_PIN);
+        if (currButtonState == GPIO_PIN_RESET && prevButtonStates[3] == GPIO_PIN_SET)
+        {
+        	sprintf(floorMessage, "%d", FLOOR_3);  // Convert 3 to "3"
+        	osMessagePut(Input_QueueHandle, (uint32_t)floorMessage, osWaitForever);
+        }
+        prevButtonStates[3] = currButtonState;
+
+        osDelay(10); // Prevent task starvation
+    }
 }
+
 
 /**
   * @brief  Period elapsed callback in non blocking mode

@@ -53,13 +53,6 @@
 #define BUTTON_4_PORT GPIOB
 
 // ** Function Prototypes **
-/**
- * @brief Clears the state of all button GPIO pins.
- *
- * Resets the state of the GPIO pins associated with the elevator control buttons,
- * ensuring that no button is active.
- */
-void clearButtonPins(void);
 
 /**
  * @brief Clears the 7-segment display.
